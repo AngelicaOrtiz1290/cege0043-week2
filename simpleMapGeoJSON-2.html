@@ -25,12 +25,13 @@ crossorigin=""></script>
 	</style>
 
 
-	<link rel="stylesheet" href="ionicons.min.css">
+<link rel="stylesheet" href="ionicons.min.css">
 <link rel="stylesheet" href="leaflet.awesome-markers.css">
 <script src = "leaflet.awesome-markers.js"></script>
 
 
 </head>
+
 <body>
 	<!--the mapid div will hold the map-->
 	<div id="mapid" style="width:600px;height:400px;"></div>
@@ -47,15 +48,10 @@ crossorigin=""></script>
 	
 //create a geoJSON feature-
 	var geojsonFeature={"type":"Feature","properties":{"name":"London","popupContent":"This is where UCL is based"},"geometry":{"type":"Point","coordinates":[-0.118092,51.509865]}};
-	// Add custom marker 
 
+	// Add custom marker 
 var testMarkerPink=L.AwesomeMarkers.icon({icon:'play',markerColor:'pink'});
 
-
-	// add it to the map
-L.geoJSON(geojsonFeature,{pointToLayer:function(feature,latlng){return L.marker(latlng,{icon:testMarkerPink});}}).addTo(mymap).bindPopup("<b>"+geojsonFeature.properties.name+""+geojsonFeature.properties.popupContent+"<b>");
-
-	
 //create a costum popup
 var popup = L.popup();
 
@@ -64,6 +60,12 @@ function onMapClick(e){popup.setLatLng(e.latlng).setContent("You clicked the map
 
 // Add the click event detector to the map
 mymap.on('click',onMapClick);
+
+	// add it to the map
+L.geoJSON(geojsonFeature,{pointToLayer:function(feature,latlng){return L.marker(latlng,{icon:testMarkerPink});}}).addTo(mymap).bindPopup("<b>"+geojsonFeature.properties.name+""+geojsonFeature.properties.popupContent+"<b>");
+
+	
+
 
 
 
