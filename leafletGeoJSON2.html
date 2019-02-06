@@ -41,9 +41,13 @@ crossorigin=""></script>
 		earthquakelayer = L.geoJson(earthquakejson).addTo(mymap);
 		mymap.fitBounds(earthquakelayer.getBounds());}
 </script>
-
 </head>
 <body>
+
+	<script>
+		document.addEventListener('DOMContentLoaded',function(){getEarthquakes();},false);
+	</script>
+
 	<!--the mapid div will hold the map-->
 	<div id="mapid" style="width:600px;height:400px;"></div>
 
