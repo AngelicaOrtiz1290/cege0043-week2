@@ -16,7 +16,7 @@
 
 
 <script>
-	var client; //hold XMLHttpRequest()
+	var client;
 	var earthquakelayer;
 	function getEarthquakes(){
 		client=new XMLHttpRequest();
@@ -31,15 +31,14 @@
 			loadEarthquakelayer(earthquakedata);
 		}
 	}
-/// Define a global variable to hols the layer so that we can use it later on
+/// Define a global variable to hold the layer so that we can use it later on
 var earthquakelayer;
 // convert the received data - txt-to JSON and add it to the map
 	function loadEarthquakelayer(earthquakedata){
 // convert the text to JSON
 	var earthquakejson = JSON.parse(earthquakedata);
 // load the geoJSON layer
-earthquakelayer=L.geoJson(earthquakejson,
-{
+earthquakelayer=L.geoJson(earthquakejson,{
 	//use point to ayer to create the point
 	pointToLayer:function(feature,latlng)
 {
@@ -47,8 +46,7 @@ earthquakelayer=L.geoJson(earthquakejson,
 // also incluide a op-up that showa the place value of the earthquakes
 if(feature.properties.mag>1.75){
 	return L.marker(latlng,{icon:testMarkerRed}).bindPopup("<b>"+feature.properties.place+"</b>");
-}
-else{
+}else{
 	//magnitude is 1.75 or less
 	return L.marker(latlng,{icon:testMarkerPink}).bindPopup("<b>"+feature.properties.place+"</b>");;
 }
@@ -56,27 +54,21 @@ else{
 }).addTo(mymap);
 mymap.fitBounds(earthquakelayer.getBounds());
 }
-// add the JSON layer onto the map-it will appear using the default icons
-	earthquakelayer = L.geoJson(earthquakejson).addTo(mymap);
-// change the map zoom so that all data is shown
-	mymap.fitBounds(earthquakelayer.getBounds());
 </script>
+
+<style type="text/css">
+	#mapid {height:180px;}
+</style>
+
 
 </head>
 
 <body>
 
-	<script>
-
-		document.addEventListener('DOMContentLoaded',function(){
-			getEarthquakes();
-		},false);
-	</script>
-
 <!--the mapid div will hold the map-->
 	<div id="mapid" style="width:600px;height:400px;"></div>
 
-	<!--the following script will load the map and set the default view and zoom, as well as loading the basemap tiles-->
+<!--the following script will load the map and set the default view and zoom, as well as loading the basemap tiles-->
 	<script>
 		//load the map
 
@@ -97,7 +89,9 @@ var testMarkerPink = L.AwesomeMarkers.icon({
 	markerColor:'pink'
 });
 
-
+document.addEventListener('DOMContentLoaded',function(){
+			getEarthquakes();
+		},false);
 
 	</script>
 
