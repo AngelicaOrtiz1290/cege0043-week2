@@ -37,45 +37,33 @@ var earthquakelayer;
 	function loadEarthquakelayer(earthquakedata){
 // convert the text to JSON
 	var earthquakejson = JSON.parse(earthquakedata);
-// add the JSON layer onto the map-it will appear using the default icons
-	earthquakelayer = L.geoJson(earthquakejson).addTo(mymap);
-// change the map zoom so that all data is shown
-	mymap.fitBounds(earthquakelayer.getBounds());
+// load the geoJSON layer
+earthquakelayer=L.geoJson(earthquakejson,
+{
+	//use point to ayer to create the point
+	pointToLayer:function(feature,latlng)
+{
+//look at the GeoJson file-specifically at the properties-to see the earthquake magnitude and use a different marker depending on its value
+// also incluide a op-up that showa the place value of the earthquakes
+if(feature.properties.mag>1.75){
+	return L.marker(latlng,{icon:testMarkerRed}).bindPopup("<b>"+feature.properties.place+"</b>");
 }
+else{
+	//magnitude is 1.75 or less
+	return L.marker(latlng,{icon:testMarkerPink}).bindPopup("<b>"+feature.properties.place+"</b>");;
+}
+},
+}).addTo(mymap);
+mymap.fitBounds(earthquakelayer.getBounds());
+}
+// add the JSON layer onto the map-it will appear using the default icons
+//	earthquakelayer = L.geoJson(earthquakejson).addTo(mymap);
+// change the map zoom so that all data is shown
+//	mymap.fitBounds(earthquakelayer.getBounds());
 </script>
-<script>
 
-	var earthquakelayer;
-	function loadEarthquakelayer(earthquakedata){
-
-		var testMarkerRed = L.AwesomeMarkers.icon({
-			icon:'play',
-			markerColor:'red'
-		});
-		var testMarkerPink = L.AwesomeMarkers.icon({
-			icon:'play',
-			markerColor:'pink'
-		});
-		var earthquakelayer;
-		function loadEarthquakelayer(earthquakedata){
-		var earthquakejson = JSON.parse (earthquakedata);
-		earthquakelayer = L.geoJson(earthquakejson,
-		{
-			pointTolayer: function (feature,latlng)
-			{
-				if(feature.properties.mag>1.75{
-					return L.marker(latlng,{icon:testMarkerRed}).bindPopup("<b>"+feature.properties.place+"</b>");
-				}
-					else{
-						return L.marker(latlng,{icon:testMarkerPink}).bindPopup("<b>"+feature.properties.place+"</b>");;
-					}
-				},
-			}).addTo(mymap);
-		mymap.fitBounds(earthquakelayer.getBounds());
-		}
-	}
-</script>
 </head>
+
 <body>
 
 	<script>
@@ -97,6 +85,17 @@ var earthquakelayer;
 		//load the tiles
 
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',{maxZoom: 18,attribution: 'Map data &copy; <ahref="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>,' +'Imagery © <a href="http://mapbox.com">Mapbox</a>',id: 'mapbox.streets'}).addTo(mymap);
+
+//  costumise Markers
+var testMarkerRed = L.AwesomeMarkers.icon({
+	icon:'play',
+	markerColor:'red'
+});
+
+var testMarkerPink = L.AwesomeMarkers.icon({
+	icon:'play'
+	markerColor:'pink'
+});
 
 
 
