@@ -70,6 +70,11 @@ mymap.fitBounds(earthquakelayer.getBounds());
 
 <!--the following script will load the map and set the default view and zoom, as well as loading the basemap tiles-->
 	<script>
+
+		document.addEventListener('DOMContentLoaded',function(){
+			getEarthquakes();
+		},false);
+
 		//load the map
 
 		var mymap= L.map('mapid').setView([51.505,-0.09],13);
@@ -85,13 +90,8 @@ var testMarkerRed = L.AwesomeMarkers.icon({
 });
 
 var testMarkerPink = L.AwesomeMarkers.icon({
-	icon:'play'
-	markerColor:'pink'
-	});
-
-document.addEventListener('DOMContentLoaded',function(){
-			getEarthquakes();
-		},false);
+	icon:'play',
+	markerColor:'pink'});
 
 	</script>
 
