@@ -51,8 +51,12 @@ mymap.fitBounds(earthquakelayer.getBounds());
 <button id="removeEarthquakeData" name="removeEarthquakeData"
 onclick="removeEarthquakeData()">Click here to remove the Earthquake data </button>
 <script type="text/javascript"></script>
+
+<script>
+var earthquakelayer;
 function removeEarthquakeData() {
-alert("remove the earthquake data here");
+alert("Earthquake data will be removed");
+mymap.removeLayer( earthquakelayer );
 }
 </script>
 
