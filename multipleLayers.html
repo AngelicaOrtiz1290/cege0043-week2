@@ -8,57 +8,36 @@
         integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
         crossorigin="">
     </script>
-
- <!-- this is to load the data to the button-->
-<script >
-function loadEarthquakeData() {
-// call the getEarthquakes code
-// keep the alert message so that we know something is happening
-alert("Loading Earthquakes");
-getEarthquakes();
-}
-// create a variable that will hold the XMLHttpRequest() - this must be done outside a function so that all the functions can use the same variable
-var client;
-// create the code to get the Earthquakes data using  XMLHttpRequest
-function getEarthquakes() {
-client = new XMLHttpRequest();
-client.open('GET','https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson');
-client.onreadystatechange = earthquakeResponse; // don't use earthquakeResponse() with brackets as that doesn't work
-client.send();
-}
-// create the code to wait for the response from the data server, and process the response once it is received
-function earthquakeResponse() {
-// this function listens out for the server to say that the data is ready - i.e. has state 4
-if (client.readyState == 4) {
-// once the data is ready, process the data
-var earthquakedata = client.responseText;
-loadEarthquakelayer(earthquakedata);
-	}
-}
-// convert the received data text to JSON format and add it to the map
-function loadEarthquakelayer(earthquakedata) {
-// convert the text to JSON
-var earthquakejson = JSON.parse(earthquakedata);
-// add the JSON layer onto the map - it will appear using the default icons
-earthquakelayer = L.geoJson(earthquakejson).addTo(mymap);
-// change the map zoom so that all the data is shown
-mymap.fitBounds(earthquakelayer.getBounds());
-}
-
-</script>
-
-<!-- Add another button-->
-<button id="removeEarthquakeData" name="removeEarthquakeData"
-onclick="removeEarthquakeData()">Click here to remove the Earthquake data </button>
-<script type="text/javascript"></script>
+ <!-- Set Map size-->
+    <style type="text/css">
+	#mapid {height:180px;}
+</style>
 
 <script>
 // create a variable for each of the layers we want to load/remove
 var earthquakelayer;
 var busstoplayer;
-// create a variable that will hold the XMLHttpRequest() - this must be done outside a function so that all the functions can use the same variable
+
+// crate  functions 
+function loadEarthquakeData(){
+	alert("Loading Earthquake Data");
+	getData ("earthquakes");
+}
+function removeEarthquakeData(){
+	alert ("Remove Earthquake Data");
+	myMap.removeLayer(earthquakelayer);
+}
+function loadBusstopData(){
+	alert("Loading Bus Data");
+	getData("busstops");
+}
+function removeBusStopData(){
+	alert(" Remove Bus Stop Data");
+	myMap.removeLayer(busstoplayer);
+}
+// variable that will hold the XMLHttpRequest() - this must be done outside a function so that all the functions can use the same variable
 var client;
-// create code to get the data using an XMLHttpRequest
+//  code to get the data using an XMLHttpRequest
 function getData(layername) {
 client = new XMLHttpRequest();
 // depending on the layername we get different URLs
@@ -74,22 +53,22 @@ client.onreadystatechange = dataResponse;
 client.send();
 }
 // create the code to wait for the response from the data server, and process the response once it is received
-function dataResponse() {
+function dataResponse(){
 // this function listens out for the server to say that the data is ready - i.e. has state 4
-if (client.readyState == 4) {
+if (client.readyState == 4){
 // once the data is ready, process the data
 var geoJSONData = client.responseText;
 loadLayer(geoJSONData);
-}
+	}
 }
 // convert the received data - which is text - to JSON format and add it to the map
-function loadLayer(geoJSONData) {
+function loadLayer(geoJSONData){
 // which layer did we actually load?
 if (geoJSONData.indexOf("earthquake") > 0) {
 var loadingEarthquakes = true;
 }
 if (geoJSONData.indexOf("IIT_METHOD") > 0) {
-var loadingBusstops = true;
+var loadingBusStops = true;
 }
 // convert the text to JSON
 var json = JSON.parse(geoJSONData);
@@ -101,14 +80,9 @@ mymap.fitBounds(earthquakelayer.getBounds());
 if (loadingBusstops === true){
 busstoplayer = L.geoJson(json).addTo(mymap);
 mymap.fitBounds(busstoplayer.getBounds());
-}
+	}
 }
 </script>
-
-<style type="text/css">
-	#mapid {height:180px;}
-</style>
-
 
 </head>
 
@@ -116,8 +90,11 @@ mymap.fitBounds(busstoplayer.getBounds());
 
 <!--the mapid div will hold the map-->
 	<div id="mapid" style="width:600px;height:400px;"></div>
-<!--Add a button-->
-<button id = "loadData" name ="loadData" onclick="loadEarthquakeData()">Click here to load the data</button>
+<!--Add buttons-->
+<button id = "loadEarthquakeData" name ="loadEarthquakeData" onclick="loadEarthquakeData()">Click here to load Earthquake data</button>
+<button id = "removeEarthquakeData" name = "removeEarthquakeData" onclick="removeEarthquakeData()">Click here to remove Earthquake data</button>
+<button id = "loadBusstopData" name = "loadBusstopData" onclick="loadBusStopData()">Click here to load Bus Stops data</button>
+<button id = "removeBusStopData" name = "removeBusStopData" onclick="removeBusStopData()">Click here to remove Bus Stop Data</button>
 
 <!--the following script will load the map and set the default view and zoom, as well as loading the basemap tiles-->
 	<script>
